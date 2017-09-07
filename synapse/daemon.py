@@ -463,6 +463,10 @@ class Daemon(EventBus, DmonConf):
             url, opts = url
             self.listen(url, **opts)
 
+        for _, loc in self.locs.items():
+            if hasattr(loc, 'fini') and callable(loc.fini):
+                self.onfini(loc.fini)
+
     def _loadSessConf(self, info):
         # curator over-ride wins
         curaname = info.get('curator')
